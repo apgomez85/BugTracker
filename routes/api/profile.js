@@ -1,9 +1,10 @@
-const express = require('express');
-const router = express.Router();
+const mongoose = require('mongoose');
 
-// @route  GET api/profile
-// @desc   Test route
-// @access Public
-router.get('/', (req, res) => res.send('Profile route'));
+const ProfileSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
+  }
+});
 
-module.exports = router;
+module.exports = Profile = mongoose.model('profile', ProfileSchema);

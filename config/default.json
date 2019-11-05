@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb://adrian:$yth3r34@bugtracker-shard-00-00-wuazg.mongodb.net:27017,bugtracker-shard-00-01-wuazg.mongodb.net:27017,bugtracker-shard-00-02-wuazg.mongodb.net:27017/test?ssl=true&replicaSet=BugTracker-shard-0&authSource=admin&retryWrites=true&w=majority"
+  "mongoURI": "mongodb://adrian:$yth3r34@bugtracker-shard-00-00-wuazg.mongodb.net:27017,bugtracker-shard-00-01-wuazg.mongodb.net:27017,bugtracker-shard-00-02-wuazg.mongodb.net:27017/test?ssl=true&replicaSet=BugTracker-shard-0&authSource=admin&retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken"
 }

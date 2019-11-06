@@ -9,6 +9,16 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  priority: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String
+  },
+  assignedTo: {
+    type: String
+  },
   name: {
     type: String
   },

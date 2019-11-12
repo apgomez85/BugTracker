@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
-import Header from '../layout/Header';
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import Header from "../layout/Header";
 
 // TODO: pass text to Header on page change
 
@@ -45,12 +45,13 @@ const Navbar = () => {
 
             <ul className="navbar-nav ml-auto">
               <li className="nav-item dropdown mr-3">
-                <Link
+                <a
+                  href="!#"
                   className="nav-link dropdown-toggle"
                   data-toggle="dropdown"
                 >
                   <i className="fas fa-user"></i> Welcome Adrian
-                </Link>
+                </a>
                 <div className="dropdown-menu">
                   <Link to="/profile" className="dropdown-item">
                     <i className="fas fa-user circle"></i> Profile

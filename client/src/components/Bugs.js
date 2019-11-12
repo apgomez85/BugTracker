@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import React from "react";
+import { Link } from "react-router-dom";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export const Bugs = () => {
   return (
     <div className="mt-4">
@@ -44,7 +44,7 @@ export const Bugs = () => {
 
       {/* MODALS */}
 
-      {/* ADD POST MODAL */}
+      {/* ADD Bug MODAL */}
 
       <div className="modal fade" id="addBugModal">
         <div className="modal-dialog modal-lg">
@@ -91,6 +91,74 @@ export const Bugs = () => {
             </div>
             <div className="modal-footer">
               <button className="btn btn-primary" data-dismiss="modal">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ADD Category MODAL */}
+
+      <div className="modal fade" id="addCategoryModal">
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header bg-success text-white">
+              <h5 className="modal-title">Add Category</h5>
+              <button className="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="title">Title</label>
+                  <input type="text" className="form-control" />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-success" data-dismiss="modal">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ADD User MODAL */}
+
+      <div className="modal fade" id="addUserModal">
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header bg-warning text-white">
+              <h5 className="modal-title">Add User</h5>
+              <button className="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <form>
+                <div className="form-group">
+                  <label htmlFor="name">Name</label>
+                  <input type="text" className="form-control" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input type="email" className="form-control" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Password</label>
+                  <input type="password" className="form-control" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password2">Confirm Password</label>
+                  <input type="password" className="form-control" />
+                </div>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-warning" data-dismiss="modal">
                 Save Changes
               </button>
             </div>

@@ -8,7 +8,7 @@ const Alert = ({ alerts }) =>
   alerts.map(alert => (
     <div
       key={alert.id}
-      className={`d-flex mt-4 alert alert-${alert.alertType}`}
+      className={`d-flex mx-5 mt-4 alert alert-${alert.alertType}`}
     >
       {alert.msg}
     </div>

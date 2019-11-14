@@ -6,7 +6,8 @@ import {
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_FAIL,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  LOGOUT
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -43,6 +44,7 @@ export const register = ({ name, email, password }) => async dispatch => {
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -70,6 +72,8 @@ export const login = (email, password) => async dispatch => {
       type: LOGIN_SUCCESS,
       payload: res.data
     });
+
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -80,4 +84,10 @@ export const login = (email, password) => async dispatch => {
       type: LOGIN_FAIL
     });
   }
+};
+
+// Logout User
+
+export const logout = () => dispatch => {
+  dispatch({ type: LOGOUT });
 };

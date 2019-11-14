@@ -12,11 +12,6 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
     <Fragment>
       <ul className="navbar-nav">
         <li className="nav-item px-2">
-          <Link to="/" className="nav-link active">
-            Dashboard
-          </Link>
-        </li>
-        <li className="nav-item px-2">
           <Link to="/bugs" className="nav-link ">
             All Bugs
           </Link>

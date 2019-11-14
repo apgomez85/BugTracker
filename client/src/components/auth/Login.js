@@ -27,13 +27,13 @@ const Login = ({ login, isAuthenticated }) => {
 
   return (
     <div className="container card-body  w-75 p-3 shadow mt-5">
-      <h2 class="card-title d-flex justify-content-center">Login</h2>
+      <h2 className="card-title d-flex justify-content-center">Login</h2>
       <form onSubmit={e => onSubmit(e)}>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email</label>
+        <div className="form-group">
+          <label htmlFor="exampleInputEmail1">Email</label>
           <input
             type="email"
-            class="form-control"
+            className="form-control"
             id="exampleInputEmail1"
             aria-describedby="emailHelp"
             placeholder="Enter email"
@@ -43,11 +43,11 @@ const Login = ({ login, isAuthenticated }) => {
             onChange={e => onChange(e)}
           />
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
+        <div className="form-group">
+          <label htmlFor="exampleInputPassword1">Password</label>
           <input
             type="password"
-            class="form-control"
+            className="form-control"
             id="exampleInputPassword1"
             placeholder="Password"
             required
@@ -57,7 +57,7 @@ const Login = ({ login, isAuthenticated }) => {
           />
         </div>
 
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>

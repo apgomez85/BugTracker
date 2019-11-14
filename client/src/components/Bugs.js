@@ -5,7 +5,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 export const Bugs = () => {
   return (
     <div className="mt-4">
-      <sections id="actions" className="py-4 mb-4 bg-light">
+      <section id="actions" className="py-4 mb-4">
         <div className="container">
           <div className="row">
             <div className="col-md-3">
@@ -40,7 +40,7 @@ export const Bugs = () => {
             </div>
           </div>
         </div>
-      </sections>
+      </section>
 
       {/* MODALS */}
 

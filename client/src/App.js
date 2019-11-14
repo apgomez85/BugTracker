@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Navbar from "./components/layout/Navbar";
 import Bugs from "./components/Bugs";
+import Profile from "./components/Profile";
 import Register from "./components/auth/Register";
 import Alert from "./components/layout/Alert";
 import { Provider } from "react-redux";
 import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./actions/auth";
+import PrivateRoute from "./components/routing/PrivateRoute";
 import "./App.css";
 
 // Pagelist:
@@ -18,6 +20,9 @@ import "./App.css";
 //    Profile
 //    Users
 //    Bugs
+
+// Register Component:
+// Change to check for admin as well
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -39,6 +44,8 @@ const App = () => {
             <Switch>
               <Route exact path="/register" component={Register} />
               <Route exact path="/bugs" component={Bugs} />
+              <Route exact path="/bugs" component={Bugs} />
+              <PrivateRoute exact path="/profile" component={Profile} />
             </Switch>
           </section>
         </Fragment>

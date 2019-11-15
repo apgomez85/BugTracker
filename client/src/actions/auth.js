@@ -7,7 +7,8 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
-  LOGOUT
+  LOGOUT,
+  CHANGE_HEADER_TEXT
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
@@ -90,4 +91,13 @@ export const login = (email, password) => async dispatch => {
 
 export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
+};
+
+// Change Header Title
+
+export const changeHeaderTitle = headerTitle => dispatch => {
+  dispatch({
+    type: CHANGE_HEADER_TEXT,
+    payload: headerTitle
+  });
 };

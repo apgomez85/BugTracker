@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
-export const Header = () => {
+export const Header = ({ headerTitle }) => {
   return (
     <header id="main-header" className="py-2 bg-primary text-white">
       <div className="container">
         <div className="row">
           <div className="col-md-6">
             <h1>
-              <i className="fas fa-cog"></i> Landing
+              <i className="fas fa-cog"></i> {headerTitle}
             </h1>
           </div>
         </div>

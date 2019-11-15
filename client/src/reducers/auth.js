@@ -5,14 +5,16 @@ import {
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOGOUT
+  LOGOUT,
+  CHANGE_HEADER_TEXT
 } from "../actions/types";
 
 const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
-  user: null
+  user: null,
+  headerTitle: "Welcome"
 };
 
 export default function(state = initialState, action) {
@@ -44,7 +46,13 @@ export default function(state = initialState, action) {
         ...state,
         token: null,
         isAuthenticated: false,
-        loading: false
+        loading: false,
+        headerTitle: "Welcome"
+      };
+    case CHANGE_HEADER_TEXT:
+      return {
+        ...state,
+        headerTitle: payload
       };
     default:
       return state;

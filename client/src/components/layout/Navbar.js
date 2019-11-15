@@ -5,9 +5,10 @@ import Header from "../layout/Header";
 import PropTypes from "prop-types";
 import { logout } from "../../actions/auth";
 
-// TODO: pass text to Header on page change
-
-const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
+const Navbar = ({
+  auth: { isAuthenticated, loading, user, headerTitle },
+  logout
+}) => {
   const authLinks = (
     <Fragment>
       <ul className="navbar-nav">
@@ -41,9 +42,6 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
             <Link to="/profile" className="dropdown-item">
               <i className="fas fa-user circle"></i> Profile
             </Link>
-            <Link to="/settings" className="dropdown-item">
-              <i className="fas fa-cog"></i> Settings
-            </Link>
           </div>
         </li>
         <li className="nav-item">
@@ -76,7 +74,8 @@ const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
           </div>
         </div>
       </nav>
-      <Header />
+
+      <Header headerTitle={headerTitle} />
     </Fragment>
   );
 };

@@ -2,23 +2,15 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import PropTypes from "prop-types";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getPosts } from "../actions/post";
 
-export const Bugs = ({ getPosts, post: { posts, loading } }) => {
+const MyBugs = props => {
   useEffect(() => {
-    store.dispatch(changeHeaderTitle("All Bugs"));
+    store.dispatch(changeHeaderTitle("My Bugs"));
   }, []);
-  useEffect(() => {
-    getPosts();
-  }, [getPosts]);
-
-  return loading ? (
-    "Loading"
-  ) : (
+  return (
     <div className="mt-4">
       <section id="actions" className="py-4 mb-4">
         <div className="container">
@@ -36,10 +28,6 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
           </div>
         </div>
       </section>
-
-      {/* Map Bugs Here */}
-
-      <h1>{posts[0].text}</h1>
 
       {/* ADD Bug MODAL */}
 
@@ -98,13 +86,6 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
   );
 };
 
-Bugs.propTypes = {
-  getPosts: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
-};
+MyBugs.propTypes = {};
 
-const mapStateToProps = state => ({
-  post: state.post
-});
-
-export default connect(mapStateToProps, { getPosts })(Bugs);
+export default MyBugs;

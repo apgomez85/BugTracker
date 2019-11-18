@@ -10,3 +10,5 @@ export const LOGOUT = "LOGOUT";
 export const CHANGE_HEADER_TEXT = "CHANGE_HEADER_TEXT";
 export const GET_POSTS = "GET_POSTS";
 export const POST_ERROR = "POST_ERROR";
+export const GET_PROFILE = "GET_PROFILE";
+export const PROFILE_ERROR = "PROFILE_ERROR";

@@ -1,14 +1,25 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import Spinner from "./layout/Spinner";
 import { getCurrentProfile } from "../actions/profile";
+import { changeHeaderTitle } from "../actions/auth";
+import store from "../store";
 
-const Profile = ({ getCurrentProfile, auth, profile }) => {
+const Profile = ({
+  getCurrentProfile,
+  auth,
+  profile: { profile, loading }
+}) => {
+  useEffect(() => {
+    store.dispatch(changeHeaderTitle("Profile"));
+  }, []);
+
   useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]);
 
-  return <div>Profile</div>;
+  return loading && profile === null ? <Spinner /> : <Fragment>test</Fragment>;
 };
 
 Profile.propTypes = {

@@ -7,6 +7,7 @@ import { changeHeaderTitle } from "../actions/auth";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPosts } from "../actions/post";
+import Spinner from "./layout/Spinner";
 
 export const Bugs = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {
@@ -17,7 +18,7 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
   }, [getPosts]);
 
   return loading ? (
-    "Loading"
+    <Spinner />
   ) : (
     <div className="mt-4">
       <section id="actions" className="py-4 mb-4">
@@ -39,7 +40,64 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
 
       {/* Map Bugs Here */}
 
-      <h1>{posts[0].text}</h1>
+      <section id="posts">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-9">
+              <div className="card">
+                <div className="card-header">
+                  <h4>Latest Bugs</h4>
+                </div>
+                <table className="table table-striped">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>Issue</th>
+                      <th>Priority</th>
+                      <th>Assigned To</th>
+                      <th>Group</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Bug Component Here */}
+
+                    <tr>
+                      <td>1</td>
+                      <td>Post One</td>
+                      <td>Medium</td>
+                      <td>Adrian</td>
+                      <td>Front-End</td>
+                      <td>Open</td>
+                      <td>May 10 2018</td>
+                      <td>
+                        <a href="details.html" className="btn btn-secondary">
+                          <i className="fas fa-angle-double-right"></i>Details
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card text-center bg-success text-white mb-3">
+                <div className="card-body">
+                  <h3>Bugs</h3>
+                  <h4 className="display">
+                    <i className="fas fa-bug"></i> 1
+                  </h4>
+                  <a href="bugs.html" className="btn btn-outline-light btn-sm">
+                    View
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ADD Bug MODAL */}
 

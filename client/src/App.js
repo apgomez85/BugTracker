@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 import Bugs from "./components/Bugs";
 import MyBugs from "./components/MyBugs";
 import Users from "./components/Users";
@@ -51,6 +52,7 @@ const App = () => {
               <PrivateRoute exact path="/my-bugs" component={MyBugs} />
             </Switch>
           </section>
+          <Footer />
         </Fragment>
       </Router>
     </Provider>

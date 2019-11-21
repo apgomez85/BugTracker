@@ -5,12 +5,21 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import PropTypes from "prop-types";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
+import { connect } from "react-redux";
+import { getPosts } from "../actions/post";
+import Spinner from "./layout/Spinner";
 
-const MyBugs = props => {
+const MyBugs = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {
     store.dispatch(changeHeaderTitle("My Bugs"));
   }, []);
-  return (
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
+
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className="mt-4">
       <section id="actions" className="py-4 mb-4">
         <div className="container">
@@ -24,6 +33,107 @@ const MyBugs = props => {
               >
                 <i className="fas fa-plus"></i> Add Bug
               </Link>
+            </div>
+            <div className="col-md-6 ml-auto">
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search..."
+                />
+                <button className="btn btn-primary">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Map Bugs Here */}
+
+      <section id="posts">
+        <div className="container  ">
+          <div className="row ">
+            <div className="col-md-9 table table-responsive">
+              <div className="card-block">
+                <div className="card-header">
+                  <h4>Latest Bugs</h4>
+                </div>
+                <table className="table table-striped">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>Issue</th>
+                      <th>Priority</th>
+                      <th>Assigned To</th>
+                      <th>Group</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Bug Component Here */}
+
+                    <tr>
+                      <td>1</td>
+                      <td>Post One</td>
+                      <td>Medium</td>
+                      <td>Adrian</td>
+                      <td>Front-End</td>
+                      <td>Open</td>
+                      <td>May 10 2018</td>
+                      <td>
+                        <a href="details.html" className="btn btn-secondary">
+                          <i className="fas fa-angle-double-right"></i>Details
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                {/* Pagination */}
+                <nav className="ml-4">
+                  <ul className="pagination">
+                    <li className="page-item disabled">
+                      <a href="#" className="page-link">
+                        Previous
+                      </a>
+                    </li>
+                    <li className="page-item active">
+                      <a href="#" className="page-link">
+                        1
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        2
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        3
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        Next
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card text-center bg-success text-white mb-3">
+                <div className="card-body">
+                  <h3>Bugs</h3>
+                  <h4 className="display">
+                    <i className="fas fa-bug"></i> 1
+                  </h4>
+                  <a href="bugs.html" className="btn btn-outline-light btn-sm">
+                    View
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -85,7 +195,13 @@ const MyBugs = props => {
     </div>
   );
 };
+MyBugs.propTypes = {
+  getPosts: PropTypes.func.isRequired,
+  post: PropTypes.object.isRequired
+};
 
-MyBugs.propTypes = {};
+const mapStateToProps = state => ({
+  post: state.post
+});
 
-export default MyBugs;
+export default connect(mapStateToProps, { getPosts })(MyBugs);

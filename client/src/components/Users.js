@@ -26,6 +26,90 @@ export const Users = () => {
         </div>
       </section>
 
+      <section id="posts">
+        <div className="container  ">
+          <div className="row ">
+            <div className="col-md-9 table table-responsive">
+              <div className="card-block">
+                <div className="card-header">
+                  <h4>Users</h4>
+                </div>
+                <table className="table table-striped">
+                  <thead className="thead-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Department</th>
+
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* User Component Here */}
+
+                    <tr>
+                      <td>1</td>
+                      <td>Adrian Gomez</td>
+                      <td>adrian@example.com</td>
+                      <td>Front-End</td>
+                      <td>
+                        <a href="details.html" className="btn btn-secondary">
+                          <i className="fas fa-angle-double-right"></i>Details
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                {/* Pagination */}
+                <nav className="ml-4">
+                  <ul className="pagination">
+                    <li className="page-item disabled">
+                      <a href="#" className="page-link">
+                        Previous
+                      </a>
+                    </li>
+                    <li className="page-item active">
+                      <a href="#" className="page-link">
+                        1
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        2
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        3
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        Next
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+            <div className="col-md-3">
+              <div className="card text-center bg-warning text-white mb-3">
+                <div className="card-body">
+                  <h3>Users</h3>
+                  <h4 className="display">
+                    <i className="fas fa-users"></i> 1
+                  </h4>
+                  <a href="bugs.html" className="btn btn-outline-light btn-sm">
+                    View
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ADD User MODAL */}
 
       <div className="modal fade" id="addUserModal">

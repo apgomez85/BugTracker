@@ -34,6 +34,16 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
                 <i className="fas fa-plus"></i> Add Bug
               </Link>
             </div>
+            <div className="col-md-6 ml-auto">
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search..."
+                />
+                <button className="btn btn-primary">Search</button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -41,10 +51,10 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
       {/* Map Bugs Here */}
 
       <section id="posts">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-9">
-              <div className="card">
+        <div className="container  ">
+          <div className="row ">
+            <div className="col-md-9 table table-responsive">
+              <div className="card-block">
                 <div className="card-header">
                   <h4>Latest Bugs</h4>
                 </div>
@@ -80,6 +90,36 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
                     </tr>
                   </tbody>
                 </table>
+                {/* Pagination */}
+                <nav className="ml-4">
+                  <ul className="pagination">
+                    <li className="page-item disabled">
+                      <a href="#" className="page-link">
+                        Previous
+                      </a>
+                    </li>
+                    <li className="page-item active">
+                      <a href="#" className="page-link">
+                        1
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        2
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        3
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a href="#" className="page-link">
+                        Next
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
             <div className="col-md-3">

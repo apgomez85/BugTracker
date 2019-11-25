@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "./layout/Spinner";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { getCurrentProfile } from "../actions/profile";
 import { changeHeaderTitle } from "../actions/auth";
 import store from "../store";
@@ -22,7 +24,73 @@ const Profile = ({
     getCurrentProfile();
   }, [getCurrentProfile]);
 
-  return loading && profile === null ? <Spinner /> : <Fragment>test</Fragment>;
+  return loading ? (
+    <Spinner />
+  ) : (
+    <div className="mt-4">
+      <section id="actions" className="py-4 mb-4">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-3">
+              <Link to="#" className="btn btn-light btn-block">
+                <i className="fas fa-arrow-left"></i> Back To Users
+              </Link>
+            </div>
+            <div className="col-md-3">
+              <Link to="#" className="btn btn-success btn-block">
+                <i className="fas fa-check"></i> Save
+              </Link>
+            </div>
+            <div className="col-md-3">
+              <Link to="#" className="btn btn-danger btn-block">
+                <i className="fas fa-trash"></i> Delete
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Details */}
+      <section id="details">
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <div className="card">
+                <div className="card-header">
+                  <h4>Edit Profile</h4>
+                </div>
+                <div className="card-body">
+                  <form>
+                    <div className="form-group">
+                      <label htmlFor="name">Name</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="email">Email</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="department">Department</label>
+                      <input type="text" className="form-control" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="department">Admin</label>
+                      <div>
+                        <label className="switch">
+                          <input type="checkbox" />
+                          <span class="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 };
 
 Profile.propTypes = {

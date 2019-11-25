@@ -1,28 +1,25 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const { check, validationResult } = require("express-validator");
 
-const User = require('../../models/User');
+const User = require("../../models/User");
 
 // @route  GET api/users
 // @desc   Register user
 // @access Public
 router.post(
-  '/',
+  "/",
   [
-    check('name', 'Name is required')
+    check("name", "Name is required")
       .not()
       .isEmpty(),
-    check('name', 'Cannot use admin for username')
-      .not()
-      .isIn(['admin', 'Admin', 'ADMIN']),
-    check('email', 'Please include a valid email').isEmail(),
+    check("email", "Please include a valid email").isEmail(),
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
+      "password",
+      "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 })
   ],
   async (req, res) => {
@@ -30,20 +27,21 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, password } = req.body;
+    const { name, email, password, admin } = req.body;
 
     try {
       let user = await User.findOne({ email });
       if (user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'User already exists' }] });
+          .json({ errors: [{ msg: "User already exists" }] });
       }
 
       user = new User({
         name,
         email,
-        password
+        password,
+        admin
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -60,7 +58,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        config.get("jwtSecret"),
         { expiresIn: 28800 },
         (error, token) => {
           if (error) throw error;
@@ -69,7 +67,7 @@ router.post(
       );
     } catch (error) {
       console.error(error.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   }
 );

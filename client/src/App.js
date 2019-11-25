@@ -1,14 +1,12 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/auth/Login";
 import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
 import Bugs from "./components/Bugs";
 import Bug from "./components/Bug";
 import MyBugs from "./components/MyBugs";
 import Users from "./components/Users";
 import Profile from "./components/Profile";
-import Register from "./components/auth/Register";
 import Alert from "./components/layout/Alert";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -40,22 +38,18 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Fragment>
-          <Navbar />
-          <Alert />
-          <Route exact path="/" component={Login} />
-          <section className="container full-height">
-            <Switch>
-              <PrivateRoute exact path="/register" component={Register} />
-              <PrivateRoute exact path="/bugs" component={Bugs} />
-              <PrivateRoute exact path="/bug" component={Bug} />
-              <PrivateRoute exact path="/users" component={Users} />
-              <PrivateRoute exact path="/profile" component={Profile} />
-              <PrivateRoute exact path="/my-bugs" component={MyBugs} />
-            </Switch>
-          </section>
-          <Footer />
-        </Fragment>
+        <Navbar />
+        <Alert />
+        <Route exact path="/" component={Login} />
+        <section className="container main-container">
+          <Switch>
+            <PrivateRoute exact path="/bugs" component={Bugs} />
+            <PrivateRoute exact path="/bug" component={Bug} />
+            <PrivateRoute exact path="/users" component={Users} />
+            <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/my-bugs" component={MyBugs} />
+          </Switch>
+        </section>
       </Router>
     </Provider>
   );

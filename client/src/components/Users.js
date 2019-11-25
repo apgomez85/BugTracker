@@ -154,6 +154,15 @@ export const Users = ({ auth }) => {
                   <label htmlFor="password2">Confirm Password</label>
                   <input type="password" className="form-control" />
                 </div>
+                <div className="form-group">
+                  <label htmlFor="department">Admin</label>
+                  <div>
+                    <label className="switch">
+                      <input type="checkbox" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
               </form>
             </div>
             <div className="modal-footer">

@@ -1,5 +1,5 @@
 .ck-editor__editable_inline {
-  min-height: 200px !important;
+  min-height: 125px !important;
 }
 html,
 body {
@@ -7,9 +7,11 @@ body {
   margin: 0;
   overflow: auto;
 }
-
+.full-height {
+  height: 100vh;
+}
 .footer {
-  position: absolute;
+  position: relative;
   left: 0;
   bottom: 0;
   right: 0;

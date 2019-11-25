@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "./layout/Spinner";
@@ -12,7 +13,9 @@ const Profile = ({
   profile: { profile, loading }
 }) => {
   useEffect(() => {
-    store.dispatch(changeHeaderTitle("Profile"));
+    store.dispatch(
+      changeHeaderTitle({ headerTitle: "Profile", bgColor: "info" })
+    );
   }, []);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import Login from "./components/auth/Login";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Bugs from "./components/Bugs";
+import Bug from "./components/Bug";
 import MyBugs from "./components/MyBugs";
 import Users from "./components/Users";
 import Profile from "./components/Profile";
@@ -43,11 +44,12 @@ const App = () => {
           <Navbar />
           <Alert />
           <Route exact path="/" component={Login} />
-          <section className="container">
+          <section className="container full-height">
             <Switch>
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/bugs" component={Bugs} />
-              <Route exact path="/users" component={Users} />
+              <PrivateRoute exact path="/register" component={Register} />
+              <PrivateRoute exact path="/bugs" component={Bugs} />
+              <PrivateRoute exact path="/bug" component={Bug} />
+              <PrivateRoute exact path="/users" component={Users} />
               <PrivateRoute exact path="/profile" component={Profile} />
               <PrivateRoute exact path="/my-bugs" component={MyBugs} />
             </Switch>

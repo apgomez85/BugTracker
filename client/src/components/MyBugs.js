@@ -9,9 +9,11 @@ import { connect } from "react-redux";
 import { getPosts } from "../actions/post";
 import Spinner from "./layout/Spinner";
 
-const MyBugs = ({ getPosts, post: { posts, loading } }) => {
+const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
   useEffect(() => {
-    store.dispatch(changeHeaderTitle("My Bugs"));
+    store.dispatch(
+      changeHeaderTitle({ headerTitle: "My Bugs", bgColor: "success" })
+    );
   }, []);
   useEffect(() => {
     getPosts();
@@ -56,7 +58,7 @@ const MyBugs = ({ getPosts, post: { posts, loading } }) => {
             <div className="col-md-9 table table-responsive">
               <div className="card-block">
                 <div className="card-header">
-                  <h4>Latest Bugs</h4>
+                  <h4>My Latest Bugs</h4>
                 </div>
                 <table className="table table-striped">
                   <thead className="thead-dark">
@@ -197,11 +199,13 @@ const MyBugs = ({ getPosts, post: { posts, loading } }) => {
 };
 MyBugs.propTypes = {
   getPosts: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { getPosts })(MyBugs);

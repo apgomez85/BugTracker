@@ -14,7 +14,8 @@ const initialState = {
   isAuthenticated: null,
   loading: true,
   user: null,
-  headerTitle: "Welcome"
+  headerTitle: "Welcome",
+  bgColor: "primary"
 };
 
 export default function(state = initialState, action) {
@@ -47,12 +48,14 @@ export default function(state = initialState, action) {
         token: null,
         isAuthenticated: false,
         loading: false,
-        headerTitle: "Welcome"
+        headerTitle: "Welcome",
+        bgColor: "primary"
       };
     case CHANGE_HEADER_TEXT:
       return {
         ...state,
-        headerTitle: payload
+        headerTitle: payload.headerTitle,
+        bgColor: payload.bgColor
       };
     default:
       return state;

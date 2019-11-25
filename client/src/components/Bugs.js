@@ -9,9 +9,11 @@ import { connect } from "react-redux";
 import { getPosts } from "../actions/post";
 import Spinner from "./layout/Spinner";
 
-export const Bugs = ({ getPosts, post: { posts, loading } }) => {
+export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
   useEffect(() => {
-    store.dispatch(changeHeaderTitle("All Bugs"));
+    store.dispatch(
+      changeHeaderTitle({ headerTitle: "All Bugs", bgColor: "primary" })
+    );
   }, []);
   useEffect(() => {
     getPosts();
@@ -27,7 +29,7 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
             <div className="col-md-3">
               <Link
                 to="#"
-                className="btn btn-success btn-block"
+                className="btn btn-primary btn-block"
                 data-toggle="modal"
                 data-target="#addBugModal"
               >
@@ -123,7 +125,7 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
               </div>
             </div>
             <div className="col-md-3">
-              <div className="card text-center bg-success text-white mb-3">
+              <div className="card text-center bg-primary text-white mb-3">
                 <div className="card-body">
                   <h3>Bugs</h3>
                   <h4 className="display">
@@ -144,7 +146,7 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
       <div className="modal fade" id="addBugModal">
         <div className="modal-dialog modal-lg">
           <div className="modal-content">
-            <div className="modal-header bg-success text-white">
+            <div className="modal-header bg-primary text-white">
               <h5 className="modal-title">Add Bug</h5>
               <button className="close" data-dismiss="modal">
                 <span>&times;</span>
@@ -185,7 +187,7 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
               </form>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-success" data-dismiss="modal">
+              <button className="btn btn-primary" data-dismiss="modal">
                 Save Changes
               </button>
             </div>
@@ -198,11 +200,13 @@ export const Bugs = ({ getPosts, post: { posts, loading } }) => {
 
 Bugs.propTypes = {
   getPosts: PropTypes.func.isRequired,
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  post: state.post
+  post: state.post,
+  auth: state.auth
 });
 
 export default connect(mapStateToProps, { getPosts })(Bugs);

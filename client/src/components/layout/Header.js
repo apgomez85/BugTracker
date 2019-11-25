@@ -1,8 +1,9 @@
 import React from "react";
 
-export const Header = ({ headerTitle }) => {
+export const Header = ({ headerTitle, bgColor }) => {
+  const headerClasses = `py-2 text-white bg-${bgColor}`;
   return (
-    <header id="main-header" className="py-2 bg-primary text-white">
+    <header id="main-header" className={headerClasses}>
       <div className="container">
         <div className="row">
           <div className="col-md-6">

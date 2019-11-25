@@ -1,12 +1,17 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
 
-export const Users = () => {
+export const Users = ({ auth }) => {
   useEffect(() => {
-    store.dispatch(changeHeaderTitle("Users"));
+    store.dispatch(
+      changeHeaderTitle({ headerTitle: "Users", bgColor: "warning" })
+    );
   }, []);
+
   return (
     <div className="mt-4">
       <section id="actions" className="py-4 mb-4">
@@ -21,6 +26,16 @@ export const Users = () => {
               >
                 <i className="fas fa-plus"></i> Add User
               </Link>
+            </div>
+            <div className="col-md-6 ml-auto">
+              <div className="input-group">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search..."
+                />
+                <button className="btn btn-primary">Search</button>
+              </div>
             </div>
           </div>
         </div>
@@ -153,4 +168,12 @@ export const Users = () => {
   );
 };
 
-export default Users;
+Users.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(Users);

@@ -95,9 +95,9 @@ export const logout = () => dispatch => {
 
 // Change Header Title
 
-export const changeHeaderTitle = headerTitle => dispatch => {
+export const changeHeaderTitle = data => dispatch => {
   dispatch({
     type: CHANGE_HEADER_TEXT,
-    payload: headerTitle
+    payload: data
   });
 };

@@ -27,16 +27,6 @@ export const Users = ({ auth }) => {
                 <i className="fas fa-plus"></i> Add User
               </Link>
             </div>
-            <div className="col-md-6 ml-auto">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                />
-                <button className="btn btn-primary">Search</button>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -76,36 +66,6 @@ export const Users = ({ auth }) => {
                     </tr>
                   </tbody>
                 </table>
-                {/* Pagination */}
-                <nav className="ml-4">
-                  <ul className="pagination">
-                    <li className="page-item disabled">
-                      <a href="#" className="page-link">
-                        Previous
-                      </a>
-                    </li>
-                    <li className="page-item active">
-                      <a href="#" className="page-link">
-                        1
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a href="#" className="page-link">
-                        2
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a href="#" className="page-link">
-                        3
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a href="#" className="page-link">
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
             <div className="col-md-3">
@@ -159,7 +119,7 @@ export const Users = ({ auth }) => {
                   <div>
                     <label className="switch">
                       <input type="checkbox" />
-                      <span class="slider round"></span>
+                      <span className="slider round"></span>
                     </label>
                   </div>
                 </div>

@@ -14,7 +14,7 @@ router.post(
   [
     auth,
     [
-      check("text", "Text is required")
+      check("title", "Text is required")
         .not()
         .isEmpty()
     ]
@@ -29,10 +29,12 @@ router.post(
       const user = await User.findById(req.user.id).select("-password");
 
       const newPost = new Post({
-        text: req.body.text,
+        title: req.body.title,
+        description: req.body.description,
         priority: req.body.priority,
         status: req.body.status,
         assignedTo: req.body.assignedTo,
+        group: req.body.group,
         name: user.name,
         user: req.user.id
       });

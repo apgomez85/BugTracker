@@ -44,7 +44,7 @@ const App = () => {
         <section className="container main-container">
           <Switch>
             <PrivateRoute exact path="/bugs" component={Bugs} />
-            <PrivateRoute exact path="/bug" component={Bug} />
+            <PrivateRoute exact path="/bugs/:id" component={Bug} />
             <PrivateRoute exact path="/users" component={Users} />
             <PrivateRoute exact path="/profile" component={Profile} />
             <PrivateRoute exact path="/my-bugs" component={MyBugs} />

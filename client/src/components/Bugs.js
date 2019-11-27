@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getPosts } from "../actions/post";
 import Spinner from "./layout/Spinner";
+import Moment from "react-moment";
 
 export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
   useEffect(() => {
@@ -35,16 +36,6 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
               >
                 <i className="fas fa-plus"></i> Add Bug
               </Link>
-            </div>
-            <div className="col-md-6 ml-auto">
-              <div className="input-group">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search..."
-                />
-                <button className="btn btn-primary">Search</button>
-              </div>
             </div>
           </div>
         </div>
@@ -76,52 +67,29 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
                   <tbody>
                     {/* Bug Component Here */}
 
-                    <tr>
-                      <td>1</td>
-                      <td>Post One</td>
-                      <td>Medium</td>
-                      <td>Adrian</td>
-                      <td>Front-End</td>
-                      <td>Open</td>
-                      <td>May 10 2018</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i>Details
-                        </a>
-                      </td>
-                    </tr>
+                    {posts.map(post => (
+                      <tr key={post._id}>
+                        <td>1</td>
+                        <td>{post.title}</td>
+                        <td>{post.priority}</td>
+                        <td>{post.assignedTo}</td>
+                        <td>{post.group}</td>
+                        <td>{post.status}</td>
+                        <td>
+                          <Moment format="YYYY/MM/DD">{post.date}</Moment>
+                        </td>
+                        <td>
+                          <Link
+                            to={`/bugs/${post._id}`}
+                            className="btn btn-secondary"
+                          >
+                            <i className="fas fa-angle-double-right"></i>Details
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
-                {/* Pagination */}
-                <nav className="ml-4">
-                  <ul className="pagination">
-                    <li className="page-item disabled">
-                      <a href="#" className="page-link">
-                        Previous
-                      </a>
-                    </li>
-                    <li className="page-item active">
-                      <a href="#" className="page-link">
-                        1
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a href="#" className="page-link">
-                        2
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a href="#" className="page-link">
-                        3
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a href="#" className="page-link">
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
             </div>
             <div className="col-md-3">
@@ -129,11 +97,8 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
                 <div className="card-body">
                   <h3>Bugs</h3>
                   <h4 className="display">
-                    <i className="fas fa-bug"></i> 1
+                    <i className="fas fa-bug"></i> {posts.length}
                   </h4>
-                  <a href="bugs.html" className="btn btn-outline-light btn-sm">
-                    View
-                  </a>
                 </div>
               </div>
             </div>
@@ -163,6 +128,10 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
                   <input type="text" className="form-control" />
                 </div>
                 <div className="form-group">
+                  <label htmlFor="group">Group</label>
+                  <input type="text" className="form-control" />
+                </div>
+                <div className="form-group">
                   <label htmlFor="priority">Priority</label>
                   <select id="" className="form-control">
                     <option value="">High</option>
@@ -170,6 +139,7 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
                     <option value="">Low</option>
                   </select>
                 </div>
+
                 <div className="form-group">
                   <label htmlFor="status">Status</label>
                   <select id="" className="form-control">
@@ -188,7 +158,7 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
             </div>
             <div className="modal-footer">
               <button className="btn btn-primary" data-dismiss="modal">
-                Save Changes
+                Submit Bug
               </button>
             </div>
           </div>

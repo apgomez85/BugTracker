@@ -1,11 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: "user"
   },
-  text: {
+  title: {
+    type: String,
+    required: true
+  },
+  description: {
     type: String,
     required: true
   },
@@ -19,6 +23,9 @@ const PostSchema = new mongoose.Schema({
   assignedTo: {
     type: String
   },
+  group: {
+    type: String
+  },
   name: {
     type: String
   },
@@ -26,7 +33,7 @@ const PostSchema = new mongoose.Schema({
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users'
+        ref: "users"
       },
       text: {
         type: String,
@@ -35,6 +42,7 @@ const PostSchema = new mongoose.Schema({
       name: {
         type: String
       },
+
       date: {
         type: Date,
         default: Date.now
@@ -47,4 +55,4 @@ const PostSchema = new mongoose.Schema({
   }
 });
 
-module.exports = Post = mongoose.model('post', PostSchema);
+module.exports = Post = mongoose.model("post", PostSchema);

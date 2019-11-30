@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getPosts } from "../actions/post";
+import { getPosts, addPost } from "../actions/post";
 import Spinner from "./layout/Spinner";
 import Moment from "react-moment";
 
-export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
+export const Bugs = ({ getPosts, addPost, post: { posts, loading } }) => {
   useEffect(() => {
     store.dispatch(
       changeHeaderTitle({ headerTitle: "All Bugs", bgColor: "primary" })
@@ -19,6 +17,26 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
   useEffect(() => {
     getPosts();
   }, [getPosts]);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    assignedTo: "",
+    group: "",
+    priority: "",
+    status: "",
+    description: ""
+  });
+
+  const { title, assignedTo, group, priority, status, description } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+
+    addPost(formData);
+  };
 
   return loading ? (
     <Spinner />
@@ -67,9 +85,9 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
                   <tbody>
                     {/* Bug Component Here */}
 
-                    {posts.map(post => (
+                    {posts.map((post, index) => (
                       <tr key={post._id}>
-                        <td>1</td>
+                        <td>{index + 1}</td>
                         <td>{post.title}</td>
                         <td>{post.priority}</td>
                         <td>{post.assignedTo}</td>
@@ -121,44 +139,92 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
               <form>
                 <div className="form-group">
                   <label htmlFor="title">Title</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    value={title}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="assignTo">Assigned To</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="assignedTo"
+                    value={assignedTo}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="group">Group</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="group"
+                    value={group}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="priority">Priority</label>
-                  <select id="" className="form-control">
-                    <option value="">High</option>
-                    <option value="">Medium</option>
-                    <option value="">Low</option>
+                  <select
+                    id=""
+                    className="form-control"
+                    name="priority"
+                    value={priority}
+                    onChange={e => onChange(e)}
+                    required
+                  >
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
                   </select>
                 </div>
 
                 <div className="form-group">
                   <label htmlFor="status">Status</label>
-                  <select id="" className="form-control">
-                    <option value="">Open</option>
-                    <option value="">Closed</option>
-                    <option value="">Needs Review</option>
-                    <option value="">Reopen</option>
+                  <select
+                    id=""
+                    className="form-control"
+                    name="status"
+                    value={status}
+                    onChange={e => onChange(e)}
+                    required
+                  >
+                    <option>Open</option>
+                    <option>Closed</option>
+                    <option>Needs Review</option>
+                    <option>Reopen</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="body">Body</label>
-                  <CKEditor editor={ClassicEditor} className="form-control" />
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    rows="4"
+                    type="text"
+                    className="form-control"
+                    name="description"
+                    value={description}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
               </form>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-primary" data-dismiss="modal">
-                Submit Bug
+              <button
+                className="btn btn-primary"
+                data-dismiss="modal"
+                type="submit"
+                onClick={e => onSubmit(e)}
+              >
+                Submit
               </button>
             </div>
           </div>
@@ -170,6 +236,7 @@ export const Bugs = ({ getPosts, post: { posts, loading }, auth }) => {
 
 Bugs.propTypes = {
   getPosts: PropTypes.func.isRequired,
+  addPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -179,4 +246,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getPosts })(Bugs);
+export default connect(mapStateToProps, { getPosts, addPost })(Bugs);

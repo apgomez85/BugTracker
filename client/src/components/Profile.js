@@ -1,10 +1,8 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "./layout/Spinner";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { getCurrentProfile } from "../actions/profile";
 import { changeHeaderTitle } from "../actions/auth";
 import store from "../store";
@@ -78,7 +76,7 @@ const Profile = ({
                       <div>
                         <label className="switch">
                           <input type="checkbox" />
-                          <span class="slider round"></span>
+                          <span className="slider round"></span>
                         </label>
                       </div>
                     </div>

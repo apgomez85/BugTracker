@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import PropTypes from "prop-types";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
 import { connect } from "react-redux";
-import { getPosts } from "../actions/post";
+import { getPosts, addPost } from "../actions/post";
 import Spinner from "./layout/Spinner";
+import Moment from "react-moment";
 
-const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
+const MyBugs = ({ getPosts, addPost, post: { posts, loading }, auth }) => {
   useEffect(() => {
     store.dispatch(
       changeHeaderTitle({ headerTitle: "My Bugs", bgColor: "success" })
@@ -18,6 +17,32 @@ const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
   useEffect(() => {
     getPosts();
   }, [getPosts]);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    assignedTo: "",
+    group: "",
+    priority: "",
+    status: "",
+    description: ""
+  });
+
+  var userPosts = [];
+
+  if (!loading && auth.user) {
+    userPosts = posts.filter(post => auth.user._id === post.user);
+  }
+
+  const { title, assignedTo, group, priority, status, description } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+
+    addPost(formData);
+  };
 
   return loading ? (
     <Spinner />
@@ -64,22 +89,27 @@ const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Bug Component Here */}
-
-                    <tr>
-                      <td>1</td>
-                      <td>Post One</td>
-                      <td>Medium</td>
-                      <td>Adrian</td>
-                      <td>Front-End</td>
-                      <td>Open</td>
-                      <td>May 10 2018</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i>Details
-                        </a>
-                      </td>
-                    </tr>
+                    {userPosts.map((post, index) => (
+                      <tr key={post._id}>
+                        <td>{index + 1}</td>
+                        <td>{post.title}</td>
+                        <td>{post.priority}</td>
+                        <td>{post.assignedTo}</td>
+                        <td>{post.group}</td>
+                        <td>{post.status}</td>
+                        <td>
+                          <Moment format="YYYY/MM/DD">{post.date}</Moment>
+                        </td>
+                        <td>
+                          <Link
+                            to={`/bugs/${post._id}`}
+                            className="btn btn-secondary"
+                          >
+                            <i className="fas fa-angle-double-right"></i>Details
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -89,7 +119,7 @@ const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
                 <div className="card-body">
                   <h3>Bugs</h3>
                   <h4 className="display">
-                    <i className="fas fa-bug"></i> 1
+                    <i className="fas fa-bug"></i> {userPosts.length}
                   </h4>
                   <a href="bugs.html" className="btn btn-outline-light btn-sm">
                     View
@@ -116,39 +146,92 @@ const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
               <form>
                 <div className="form-group">
                   <label htmlFor="title">Title</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="title"
+                    value={title}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="assignTo">Assigned To</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="assignedTo"
+                    value={assignedTo}
+                    onChange={e => onChange(e)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="group">Group</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="group"
+                    value={group}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="priority">Priority</label>
-                  <select id="" className="form-control">
-                    <option value="">High</option>
-                    <option value="">Medium</option>
-                    <option value="">Low</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="status">Status</label>
-                  <select id="" className="form-control">
-                    <option value="">Open</option>
-                    <option value="">Closed</option>
-                    <option value="">Needs Review</option>
-                    <option value="">Reopen</option>
+                  <select
+                    id=""
+                    className="form-control"
+                    name="priority"
+                    value={priority}
+                    onChange={e => onChange(e)}
+                    required
+                  >
+                    <option>High</option>
+                    <option>Medium</option>
+                    <option>Low</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="body">Body</label>
-                  <CKEditor editor={ClassicEditor} className="form-control" />
+                  <label htmlFor="status">Status</label>
+                  <select
+                    id=""
+                    className="form-control"
+                    name="status"
+                    value={status}
+                    onChange={e => onChange(e)}
+                    required
+                  >
+                    <option>Open</option>
+                    <option>Closed</option>
+                    <option>Needs Review</option>
+                    <option>Reopen</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="description">Description</label>
+                  <textarea
+                    rows="4"
+                    type="text"
+                    className="form-control"
+                    name="description"
+                    value={description}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
               </form>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-success" data-dismiss="modal">
-                Save Changes
+              <button
+                className="btn btn-success"
+                data-dismiss="modal"
+                type="submit"
+                onClick={e => onSubmit(e)}
+              >
+                Submit
               </button>
             </div>
           </div>
@@ -159,6 +242,7 @@ const MyBugs = ({ getPosts, post: { posts, loading }, auth }) => {
 };
 MyBugs.propTypes = {
   getPosts: PropTypes.func.isRequired,
+  addPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -168,4 +252,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getPosts })(MyBugs);
+export default connect(mapStateToProps, { getPosts, addPost })(MyBugs);

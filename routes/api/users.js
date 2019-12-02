@@ -7,7 +7,7 @@ const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
 
-// @route  GET api/users
+// @route  POST api/users
 // @desc   Register user
 // @access Public
 router.post(
@@ -24,10 +24,11 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
+
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { name, email, password, admin } = req.body;
+    const { name, email, password, department, admin } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -41,6 +42,7 @@ router.post(
         name,
         email,
         password,
+        department,
         admin
       });
 
@@ -71,5 +73,20 @@ router.post(
     }
   }
 );
+
+// @route   GET api/users
+// @desc    Get all users
+// @access  Public
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find()
+      .populate("user")
+      .select("-password");
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

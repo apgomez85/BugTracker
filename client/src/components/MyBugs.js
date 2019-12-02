@@ -121,9 +121,6 @@ const MyBugs = ({ getPosts, addPost, post: { posts, loading }, auth }) => {
                   <h4 className="display">
                     <i className="fas fa-bug"></i> {userPosts.length}
                   </h4>
-                  <a href="bugs.html" className="btn btn-outline-light btn-sm">
-                    View
-                  </a>
                 </div>
               </div>
             </div>

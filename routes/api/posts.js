@@ -14,7 +14,22 @@ router.post(
   [
     auth,
     [
-      check("title", "Text is required")
+      check("title", "Title is required")
+        .not()
+        .isEmpty(),
+      check("description", "Description is required")
+        .not()
+        .isEmpty(),
+      check("priority", "Priority is required")
+        .not()
+        .isEmpty(),
+      check("status", "Status is required")
+        .not()
+        .isEmpty(),
+      check("assignedTo", "Assignment is required")
+        .not()
+        .isEmpty(),
+      check("group", "Department is required")
         .not()
         .isEmpty()
     ]

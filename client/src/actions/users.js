@@ -1,48 +1,44 @@
 import axios from "axios";
 import { setAlert } from "./alert";
-import { GET_POSTS, POST_ERROR, ADD_POST } from "./types";
+import { GET_USERS, USERS_ERROR, ADD_USER } from "./types";
 
-// Get posts
-export const getPosts = () => async dispatch => {
+// Get users
+export const getUsers = () => async dispatch => {
   try {
-    const res = await axios.get("/api/posts");
-
+    const res = await axios.get("/api/users");
     dispatch({
-      type: GET_POSTS,
+      type: GET_USERS,
       payload: res.data
     });
   } catch (err) {
     dispatch({
-      type: POST_ERROR,
+      type: USERS_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
 
-// Add post
-export const addPost = formData => async dispatch => {
+// Add user
+export const addUser = submitData => async dispatch => {
   const config = {
     headers: {
       "Content-Type": "application/json"
     }
   };
-
   try {
-    const res = await axios.post("/api/posts", formData, config);
-
+    const res = await axios.post("/api/users", submitData, config);
     dispatch({
-      type: ADD_POST,
+      type: ADD_USER,
       payload: res.data
     });
-
-    dispatch(setAlert("Bug Added", "success"));
+    dispatch(setAlert("User Added", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
     }
     dispatch({
-      type: POST_ERROR,
+      type: USERS_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
   }

@@ -1,35 +1,88 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
+import Spinner from "./layout/Spinner";
+import { getUsers, addUser } from "../actions/users";
+import { setAlert } from "../actions/alert";
 
-export const Users = ({ auth }) => {
+// addUser
+
+export const Users = ({
+  getUsers,
+  addUser,
+  user: { users, loading },
+  auth
+}) => {
   useEffect(() => {
     store.dispatch(
       changeHeaderTitle({ headerTitle: "Users", bgColor: "warning" })
     );
   }, []);
 
-  return (
+  useEffect(() => {
+    getUsers();
+  }, [getUsers]);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+    department: "",
+    admin: false
+  });
+
+  const [userLoaded, setUserLoaded] = useState(false);
+
+  const { name, email, password, password2, department, admin } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    if (password !== password2) {
+      store.dispatch(setAlert("Passwords do not match", "danger"));
+    } else {
+      const { password2, ...submitData } = formData;
+
+      addUser(submitData);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && auth.user) {
+      setUserLoaded(true);
+    }
+  }, [auth.user, loading]);
+
+  return loading ? (
+    <Spinner />
+  ) : (
     <div className="mt-4">
-      <section id="actions" className="py-4 mb-4">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-3">
-              <Link
-                to="#"
-                className="btn btn-warning btn-block"
-                data-toggle="modal"
-                data-target="#addUserModal"
-              >
-                <i className="fas fa-plus"></i> Add User
-              </Link>
+      {auth.user.admin ? (
+        <section id="actions" className="py-4 mb-4">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-3">
+                <Link
+                  to="#"
+                  className="btn btn-warning btn-block"
+                  data-toggle="modal"
+                  data-target="#addUserModal"
+                >
+                  <i className="fas fa-plus"></i> Add User
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        ""
+      )}
 
       <section id="posts">
         <div className="container  ">
@@ -53,17 +106,23 @@ export const Users = ({ auth }) => {
                   <tbody>
                     {/* User Component Here */}
 
-                    <tr>
-                      <td>1</td>
-                      <td>Adrian Gomez</td>
-                      <td>adrian@example.com</td>
-                      <td>Front-End</td>
-                      <td>
-                        <a href="details.html" className="btn btn-secondary">
-                          <i className="fas fa-angle-double-right"></i>Details
-                        </a>
-                      </td>
-                    </tr>
+                    {users.map((user, index) => (
+                      <tr key={user._id}>
+                        <td>{index + 1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.department}</td>
+
+                        <td>
+                          <Link
+                            to={`/users/${user._id}`}
+                            className="btn btn-secondary"
+                          >
+                            <i className="fas fa-angle-double-right"></i>Details
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -73,11 +132,8 @@ export const Users = ({ auth }) => {
                 <div className="card-body">
                   <h3>Users</h3>
                   <h4 className="display">
-                    <i className="fas fa-users"></i> 1
+                    <i className="fas fa-users"></i> {users.length}
                   </h4>
-                  <a href="bugs.html" className="btn btn-outline-light btn-sm">
-                    View
-                  </a>
                 </div>
               </div>
             </div>
@@ -100,25 +156,70 @@ export const Users = ({ auth }) => {
               <form>
                 <div className="form-group">
                   <label htmlFor="name">Name</label>
-                  <input type="text" className="form-control" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="name"
+                    value={name}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email</label>
-                  <input type="email" className="form-control" />
+                  <input
+                    type="email"
+                    className="form-control"
+                    name="email"
+                    value={email}
+                    onChange={e => onChange(e)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="department">Department</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="department"
+                    value={department}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <input type="password" className="form-control" />
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="password"
+                    value={password}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password2">Confirm Password</label>
-                  <input type="password" className="form-control" />
+                  <input
+                    type="password"
+                    className="form-control"
+                    name="password2"
+                    value={password2}
+                    onChange={e => onChange(e)}
+                    required
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="department">Admin</label>
                   <div>
                     <label className="switch">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        name="admin"
+                        value={!admin}
+                        onChange={e => onChange(e)}
+                        required
+                      />
                       <span className="slider round"></span>
                     </label>
                   </div>
@@ -126,7 +227,12 @@ export const Users = ({ auth }) => {
               </form>
             </div>
             <div className="modal-footer">
-              <button className="btn btn-warning" data-dismiss="modal">
+              <button
+                className="btn btn-warning"
+                data-dismiss="modal"
+                type="submit"
+                onClick={e => onSubmit(e)}
+              >
                 Save Changes
               </button>
             </div>
@@ -138,11 +244,15 @@ export const Users = ({ auth }) => {
 };
 
 Users.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  getUsers: PropTypes.func.isRequired,
+  addUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  user: state.user
 });
 
-export default connect(mapStateToProps)(Users);
+export default connect(mapStateToProps, { getUsers, addUser })(Users);

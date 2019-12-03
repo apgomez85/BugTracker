@@ -76,6 +76,43 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+// @route   UPDATE api/posts
+// @desc    Update a posts
+// @access  Private
+router.put("/:id", auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(404).json({ msg: "Post not found" });
+    }
+
+    const {
+      title,
+      description,
+      priority,
+      status,
+      assignedTo,
+      group
+    } = req.body;
+
+    if (title) post.title = title;
+    if (description) post.description = description;
+    if (priority) post.priority = priority;
+    if (status) post.status = status;
+    if (assignedTo) post.assignedTo = assignedTo;
+    if (group) post.group = group;
+
+    post.save();
+
+    res.json({ msg: "Post Updated" });
+  } catch (error) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Post not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
 // @route   GET api/posts/:id
 // @desc    Get post by ID
 // @access  Private
@@ -87,7 +124,6 @@ router.get("/:id", auth, async (req, res) => {
     }
     res.json(post);
   } catch (err) {
-    console.error(err.message);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Post not found" });
     }

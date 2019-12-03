@@ -8,8 +8,6 @@ import Spinner from "./layout/Spinner";
 import { getUsers, addUser } from "../actions/users";
 import { setAlert } from "../actions/alert";
 
-// addUser
-
 export const Users = ({
   getUsers,
   addUser,
@@ -63,7 +61,7 @@ export const Users = ({
     <Spinner />
   ) : (
     <div className="mt-4">
-      {auth.user.admin ? (
+      {userLoaded && auth.user.admin ? (
         <section id="actions" className="py-4 mb-4">
           <div className="container">
             <div className="row">
@@ -113,14 +111,21 @@ export const Users = ({
                         <td>{user.email}</td>
                         <td>{user.department}</td>
 
-                        <td>
-                          <Link
-                            to={`/users/${user._id}`}
-                            className="btn btn-secondary"
-                          >
-                            <i className="fas fa-angle-double-right"></i>Details
-                          </Link>
-                        </td>
+                        {auth.user.admin ? (
+                          <td>
+                            <Link
+                              to={`/users/${user._id}`}
+                              className="btn btn-secondary"
+                            >
+                              <i className="fas fa-angle-double-right"></i>
+                              Details
+                            </Link>
+                          </td>
+                        ) : (
+                          <td>
+                            <div></div>
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>

@@ -1,23 +1,55 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { getPosts } from "../actions/post";
 import Spinner from "./layout/Spinner";
+import { getPost } from "../actions/post";
 
-export const Bug = ({ getPosts, post: { posts, loading }, auth }) => {
+// Add functionality to edit bug changes and delete bug
+
+export const Bug = ({ getPost, post: { post, loading }, auth, match }) => {
+  const [userLoaded, setUserLoaded] = useState(false);
+
   useEffect(() => {
     store.dispatch(
       changeHeaderTitle({ headerTitle: "Bug Details", bgColor: "primary" })
     );
   }, []);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    assignedTo: "",
+    group: "",
+    priority: "",
+    status: "",
+    description: ""
+  });
+
   useEffect(() => {
-    getPosts();
-  }, [getPosts]);
+    getPost(match.params.id);
+
+    setFormData({
+      title: loading || !post.title ? "" : post.title,
+      assignedTo: loading || !post.assignedTo ? "" : post.assignedTo,
+      group: loading || !post.group ? "" : post.group,
+      priority: loading || !post.priority ? "" : post.priority,
+      status: loading || !post.status ? "" : post.status,
+      description: loading || !post.description ? "" : post.description
+    });
+  }, [loading, getPost, post, match]);
+
+  useEffect(() => {
+    if (!loading && auth.user) {
+      setUserLoaded(true);
+    }
+  }, [auth.user, loading]);
+
+  const { title, assignedTo, group, priority, status, description } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return loading ? (
     <Spinner />
@@ -27,8 +59,13 @@ export const Bug = ({ getPosts, post: { posts, loading }, auth }) => {
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <Link to="#" className="btn btn-light btn-block">
-                <i className="fas fa-arrow-left"></i> Back To Bugs
+              <Link to="/bugs" className="btn btn-light btn-block">
+                <i className="fas fa-arrow-left"></i> Back To All Bugs
+              </Link>
+            </div>
+            <div className="col-md-3">
+              <Link to="/my-bugs" className="btn btn-info btn-block">
+                <i className="fas fa-arrow-left"></i> Back To My Bugs
               </Link>
             </div>
             <div className="col-md-3">
@@ -36,11 +73,15 @@ export const Bug = ({ getPosts, post: { posts, loading }, auth }) => {
                 <i className="fas fa-check"></i> Save
               </Link>
             </div>
-            <div className="col-md-3">
-              <Link to="#" className="btn btn-danger btn-block">
-                <i className="fas fa-trash"></i> Delete
-              </Link>
-            </div>
+            {userLoaded && auth.user.admin ? (
+              <div className="col-md-3">
+                <Link to="#" className="btn btn-danger btn-block">
+                  <i className="fas fa-trash"></i> Delete
+                </Link>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </section>
@@ -58,35 +99,79 @@ export const Bug = ({ getPosts, post: { posts, loading }, auth }) => {
                   <form>
                     <div className="form-group">
                       <label htmlFor="title">Title</label>
-                      <input type="text" className="form-control" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="title"
+                        value={title}
+                        onChange={e => onChange(e)}
+                        required
+                      />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="assignTo">Assigned To</label>
-                      <input type="text" className="form-control" />
+                      <label htmlFor="assignedTo">Assigned To</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="assignedTo"
+                        value={assignedTo}
+                        onChange={e => onChange(e)}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="group">Group</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="group"
+                        value={group}
+                        onChange={e => onChange(e)}
+                        required
+                      />
                     </div>
                     <div className="form-group">
                       <label htmlFor="priority">Priority</label>
-                      <select id="" className="form-control">
-                        <option value="">High</option>
-                        <option value="">Medium</option>
-                        <option value="">Low</option>
+                      <select
+                        id=""
+                        className="form-control"
+                        name="priority"
+                        value={priority}
+                        onChange={e => onChange(e)}
+                        required
+                      >
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
                       </select>
                     </div>
                     <div className="form-group">
                       <label htmlFor="status">Status</label>
-                      <select id="" className="form-control">
-                        <option value="">Open</option>
-                        <option value="">Closed</option>
-                        <option value="">Needs Review</option>
-                        <option value="">Reopen</option>
+                      <select
+                        id=""
+                        className="form-control"
+                        name="status"
+                        value={status}
+                        onChange={e => onChange(e)}
+                        required
+                      >
+                        <option>Open</option>
+                        <option>Closed</option>
+                        <option>Needs Review</option>
+                        <option>Reopen</option>
                       </select>
                     </div>
 
                     <div className="form-group">
-                      <label htmlFor="body">Body</label>
-                      <CKEditor
-                        editor={ClassicEditor}
+                      <label htmlFor="description">Description</label>
+                      <textarea
+                        rows="4"
+                        type="text"
                         className="form-control"
+                        name="description"
+                        value={description}
+                        onChange={e => onChange(e)}
+                        required
                       />
                     </div>
                   </form>
@@ -101,7 +186,7 @@ export const Bug = ({ getPosts, post: { posts, loading }, auth }) => {
 };
 
 Bug.propTypes = {
-  getPosts: PropTypes.func.isRequired,
+  getPost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -111,4 +196,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getPosts })(Bug);
+export default connect(mapStateToProps, { getPost })(Bug);

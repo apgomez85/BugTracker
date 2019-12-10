@@ -42,6 +42,15 @@ router.post(
 
     try {
       const user = await User.findById(req.user.id).select("-password");
+      const users = await User.find().select("-password");
+
+      const matchingUser = users.filter(
+        user => user.name === req.body.assignedTo
+      );
+
+      if (matchingUser.length === 0) {
+        return res.status(404).json({ msg: "Assign to existing user" });
+      }
 
       const newPost = new Post({
         title: req.body.title,
@@ -82,8 +91,16 @@ router.get("/", auth, async (req, res) => {
 router.put("/:id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    const reqUser = await User.findById(req.user.id);
+
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });
+    }
+
+    if (reqUser.name !== post.assignedTo && reqUser.admin !== true) {
+      return res
+        .status(401)
+        .json({ msg: "User not authorized for this entry" });
     }
 
     const {
@@ -105,7 +122,7 @@ router.put("/:id", auth, async (req, res) => {
     post.save();
 
     res.json({ msg: "Post Updated" });
-  } catch (error) {
+  } catch (err) {
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Post not found" });
     }
@@ -137,21 +154,23 @@ router.get("/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+    const reqUser = await User.findById(req.user.id);
 
     if (!post) {
       return res.status(404).json({ msg: "Post not found" });
     }
 
     //Check user
-    if (post.user.toString() !== req.user.id) {
-      return res.status(401).json({ msg: "User not authorized" });
+    if (reqUser.name !== post.assignedTo && reqUser.admin !== true) {
+      return res
+        .status(401)
+        .json({ msg: "User not authorized for this entry" });
     }
 
     await post.remove();
 
     res.json({ msg: "Post removed" });
   } catch (err) {
-    console.error(err.message);
     if (err.kind === "ObjectId") {
       return res.status(404).json({ msg: "Post not found" });
     }

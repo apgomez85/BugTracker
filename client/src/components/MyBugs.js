@@ -30,7 +30,7 @@ const MyBugs = ({ getPosts, addPost, post: { posts, loading }, auth }) => {
   var userPosts = [];
 
   if (!loading && auth.user) {
-    userPosts = posts.filter(post => auth.user._id === post.user);
+    userPosts = posts.filter(post => auth.user.name === post.assignedTo);
   }
 
   const { title, assignedTo, group, priority, status, description } = formData;

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import store from "../store";
 import { changeHeaderTitle } from "../actions/auth";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "./layout/Spinner";
-import { getPost } from "../actions/post";
+import { getPost, updatePost, deletePost } from "../actions/post";
 
 // Add functionality to edit bug changes and delete bug
 
-export const Bug = ({ getPost, post: { post, loading }, auth, match }) => {
+export const Bug = ({
+  getPost,
+  updatePost,
+  deletePost,
+  post: { post, loading },
+  auth,
+  match
+}) => {
   const [userLoaded, setUserLoaded] = useState(false);
 
   useEffect(() => {
@@ -38,7 +45,17 @@ export const Bug = ({ getPost, post: { post, loading }, auth, match }) => {
       status: loading || !post.status ? "" : post.status,
       description: loading || !post.description ? "" : post.description
     });
-  }, [loading, getPost, post, match]);
+  }, [
+    loading,
+    getPost,
+    match.params.id,
+    post.title,
+    post.assignedTo,
+    post.group,
+    post.priority,
+    post.status,
+    post.description
+  ]);
 
   useEffect(() => {
     if (!loading && auth.user) {
@@ -48,8 +65,22 @@ export const Bug = ({ getPost, post: { post, loading }, auth, match }) => {
 
   const { title, assignedTo, group, priority, status, description } = formData;
 
-  const onChange = e =>
+  const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async e => {
+    e.preventDefault();
+
+    updatePost(match.params.id, formData);
+  };
+
+  const handleDelete = async e => {
+    e.preventDefault();
+
+    deletePost(match.params.id);
+    return <Redirect to="/bugs" />;
+  };
 
   return loading ? (
     <Spinner />
@@ -69,15 +100,23 @@ export const Bug = ({ getPost, post: { post, loading }, auth, match }) => {
               </Link>
             </div>
             <div className="col-md-3">
-              <Link to="#" className="btn btn-success btn-block">
+              <button
+                type="submit"
+                onClick={e => handleSave(e)}
+                className="btn btn-success btn-block"
+              >
                 <i className="fas fa-check"></i> Save
-              </Link>
+              </button>
             </div>
             {userLoaded && auth.user.admin ? (
               <div className="col-md-3">
-                <Link to="#" className="btn btn-danger btn-block">
+                <button
+                  type="submit"
+                  onClick={e => handleDelete(e)}
+                  className="btn btn-danger btn-block"
+                >
                   <i className="fas fa-trash"></i> Delete
-                </Link>
+                </button>
               </div>
             ) : (
               ""
@@ -187,6 +226,8 @@ export const Bug = ({ getPost, post: { post, loading }, auth, match }) => {
 
 Bug.propTypes = {
   getPost: PropTypes.func.isRequired,
+  updatePost: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -196,4 +237,6 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { getPost })(Bug);
+export default connect(mapStateToProps, { getPost, updatePost, deletePost })(
+  Bug
+);

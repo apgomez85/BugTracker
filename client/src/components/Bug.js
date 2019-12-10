@@ -18,6 +18,7 @@ export const Bug = ({
   match
 }) => {
   const [userLoaded, setUserLoaded] = useState(false);
+  const [redirectToBugs, setRedirectToBugs] = useState(false);
 
   useEffect(() => {
     store.dispatch(
@@ -72,20 +73,20 @@ export const Bug = ({
   const handleSave = async e => {
     e.preventDefault();
 
-    updatePost(match.params.id, formData);
+    await updatePost(match.params.id, formData);
   };
 
   const handleDelete = async e => {
     e.preventDefault();
-
-    deletePost(match.params.id);
-    return <Redirect to="/bugs" />;
+    await deletePost(match.params.id);
+    setRedirectToBugs({ redirectToBugs: true });
   };
 
   return loading ? (
     <Spinner />
   ) : (
     <div className="mt-4">
+      {redirectToBugs ? <Redirect to="/bugs" /> : null}
       <section id="actions" className="py-4 mb-4">
         <div className="container">
           <div className="row">

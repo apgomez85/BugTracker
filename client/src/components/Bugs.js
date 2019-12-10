@@ -35,7 +35,7 @@ export const Bugs = ({ getPosts, addPost, post: { posts, loading } }) => {
   const onSubmit = async e => {
     e.preventDefault();
 
-    addPost(formData);
+    await addPost(formData);
   };
 
   return loading ? (

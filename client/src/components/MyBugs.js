@@ -41,7 +41,7 @@ const MyBugs = ({ getPosts, addPost, post: { posts, loading }, auth }) => {
   const onSubmit = async e => {
     e.preventDefault();
 
-    addPost(formData);
+    await addPost(formData);
   };
 
   return loading ? (

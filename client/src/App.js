@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import Login from "./components/auth/Login";
 import Navbar from "./components/layout/Navbar";
 import Bugs from "./components/Bugs";
@@ -46,8 +51,10 @@ const App = () => {
             <PrivateRoute exact path="/bugs" component={Bugs} />
             <PrivateRoute exact path="/bugs/:id" component={Bug} />
             <PrivateRoute exact path="/users" component={Users} />
-            <PrivateRoute exact path="/profile" component={Profile} />
+            <PrivateRoute exact path="/users/:id" component={Profile} />
+            <PrivateRoute exact path="/profile/:id" component={Profile} />
             <PrivateRoute exact path="/my-bugs" component={MyBugs} />
+            <Redirect to="/" />
           </Switch>
         </section>
       </Router>

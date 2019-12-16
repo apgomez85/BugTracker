@@ -40,6 +40,10 @@ export const Users = ({
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const onSwitch = e => {
+    setFormData({ ...formData, admin: !admin });
+  };
+
   const onSubmit = async e => {
     e.preventDefault();
     if (password !== password2) {
@@ -47,7 +51,7 @@ export const Users = ({
     } else {
       const { password2, ...submitData } = formData;
 
-      addUser(submitData);
+      await addUser(submitData);
     }
   };
 
@@ -222,7 +226,7 @@ export const Users = ({
                         type="checkbox"
                         name="admin"
                         value={!admin}
-                        onChange={e => onChange(e)}
+                        onChange={e => onSwitch(e)}
                         required
                       />
                       <span className="slider round"></span>

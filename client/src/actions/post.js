@@ -78,11 +78,11 @@ export const getPost = id => async dispatch => {
 // Delete Post
 export const deletePost = id => async dispatch => {
   try {
-    const res = await axios.delete(`/api/posts/${id}`);
+    await axios.delete(`/api/posts/${id}`);
 
     dispatch({
       type: DELETE_POST,
-      payload: res.data
+      payload: id
     });
   } catch (err) {
     if (err.response.data.msg) {

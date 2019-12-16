@@ -39,7 +39,7 @@ const Navbar = ({
             <i className="fas fa-user"></i> Welcome {user ? user.name : ""}
           </a>
           <div className="dropdown-menu">
-            <Link to="/profile" className="dropdown-item">
+            <Link to={`/profile/${user._id}`} className="dropdown-item">
               <i className="fas fa-user circle"></i> Profile
             </Link>
           </div>
@@ -57,7 +57,7 @@ const Navbar = ({
     <Fragment>
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-0">
         <div className="container">
-          <Link to="/" className="navbar-brand">
+          <Link to="/bugs" className="navbar-brand">
             Bugtracker
           </Link>
           <button

@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const auth = require("../../middleware/auth");
+var mongoose = require("mongoose");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../../models/User");
@@ -85,6 +87,93 @@ router.get("/", async (req, res) => {
     res.json(users);
   } catch (err) {
     console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/users
+// @desc    Get current user
+// @access  Public
+router.get("/:id", auth, async (req, res) => {
+  try {
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      const user = await User.findById(req.params.id);
+      if (!user) return res.status(400).json({ msg: "User not found" });
+      res.json(user);
+    } else {
+      return res.status(400).json({ msg: "User not found" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      return res.status(400).json({ msg: "User not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   UPDATE api/users
+// @desc    Update a user
+// @access  Private
+router.put("/:id", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const reqUser = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    if (reqUser.admin !== true) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    const { name, email, department, admin } = req.body;
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (department) user.department = department;
+    if (admin === true) {
+      user.admin = true;
+    } else {
+      user.admin = false;
+    }
+
+    user.save();
+
+    res.json({ msg: "User Updated" });
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   DELETE api/users/:id
+// @desc    Delete a user
+// @access  Private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const reqUser = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    //Check user
+    if (reqUser.admin !== true) {
+      return res.status(401).json({ msg: "User not authorized" });
+    }
+
+    await user.remove();
+
+    res.json({ msg: "User removed" });
+  } catch (err) {
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "User not found" });
+    }
     res.status(500).send("Server Error");
   }
 });
